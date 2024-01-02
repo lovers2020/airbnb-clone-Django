@@ -1,6 +1,7 @@
 from email.policy import default
 from django.db import models
 from common.models import CommonModel
+from django.core.validators import MinValueValidator
 
 
 class Room(CommonModel):
@@ -22,9 +23,9 @@ class Room(CommonModel):
         default="서울",
     )
 
-    price = models.PositiveIntegerField()
-    rooms = models.PositiveIntegerField()
-    toilet = models.PositiveIntegerField()
+    price = models.PositiveIntegerField(validators=[MinValueValidator(0)])
+    rooms = models.PositiveIntegerField(validators=[MinValueValidator(0)])
+    toilet = models.PositiveIntegerField(validators=[MinValueValidator(0)])
     description = models.TextField()
     address = models.CharField(max_length=250)
     pet_friendly = models.BooleanField(default=True)
