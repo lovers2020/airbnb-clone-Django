@@ -12,3 +12,5 @@
     "amenities": [1, 2, 3, 5],
     "kind": "entire_place",
 }
+
+{"price": 110, "category": 6, "amenities": [1, 2, 5]}

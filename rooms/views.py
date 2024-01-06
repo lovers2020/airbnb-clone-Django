@@ -284,6 +284,7 @@ class RoomsBookings(APIView):
     def get(self, request, pk):
         room = self.get_object(pk)
         now = timezone.localtime(timezone.now()).date()
+        print(now)
 
         bookings = Booking.objects.filter(
             room=room,
@@ -298,6 +299,12 @@ class RoomsBookings(APIView):
         serializer = CreateRoomBookingSerializer(data=request.data)
 
         if serializer.is_valid():
-            return Response({"ok": True})
+            booking = serializer.save(
+                room=room,
+                user=request.user,
+                kind=Booking.BookingKindChoices.ROOM,
+            )
+            serializer = PublicBookingSerializer(booking)
+            return Response(serializer.data)
         else:
             return Response(serializer.errors)
