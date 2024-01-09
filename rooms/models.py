@@ -1,6 +1,7 @@
 from email.policy import default
 from django.db import models
 from common.models import CommonModel
+from django.core.validators import MinValueValidator
 
 
 class Room(CommonModel):
@@ -12,7 +13,7 @@ class Room(CommonModel):
         PRIVATE_ROOM = ("private_room", "Private Room")
         SHARED_ROOM = ("shared_room", "Shared Room")
 
-    name = models.CharField(max_length=180, default="")
+    name = models.CharField(max_length=150, default="")
     country = models.CharField(
         max_length=50,
         default="한국",
@@ -22,9 +23,9 @@ class Room(CommonModel):
         default="서울",
     )
 
-    price = models.PositiveIntegerField()
-    rooms = models.PositiveIntegerField()
-    toilet = models.PositiveIntegerField()
+    price = models.PositiveIntegerField(validators=[MinValueValidator(0)])
+    rooms = models.PositiveIntegerField(validators=[MinValueValidator(0)])
+    toilet = models.PositiveIntegerField(validators=[MinValueValidator(0)])
     description = models.TextField()
     address = models.CharField(max_length=250)
     pet_friendly = models.BooleanField(default=True)
@@ -57,7 +58,7 @@ class Room(CommonModel):
     def rating(self):
         count = self.reviews.count()
         if count == 0:
-            return "No Reviews"
+            return 0
         else:
             total_rating = 0
             for review in self.reviews.all().values("rating"):
