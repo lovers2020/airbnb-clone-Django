@@ -13,7 +13,7 @@ class Room(CommonModel):
         PRIVATE_ROOM = ("private_room", "Private Room")
         SHARED_ROOM = ("shared_room", "Shared Room")
 
-    name = models.CharField(max_length=180, default="")
+    name = models.CharField(max_length=150, default="")
     country = models.CharField(
         max_length=50,
         default="한국",

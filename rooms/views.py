@@ -4,6 +4,7 @@ from django.utils import timezone
 import datetime
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.status import HTTP_400_BAD_REQUEST
 from rest_framework.exceptions import (
     NotFound,
     NotAuthenticated,
@@ -37,7 +38,7 @@ class Amenities(APIView):
             amenity = serializer.save()
             return Response(AmenitySerializer(amenity).data)
         else:
-            return Response(serializer.errors)
+            return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
 
 
 class AmenityDetail(APIView):
@@ -62,15 +63,15 @@ class AmenityDetail(APIView):
         if serializer.is_valid():
             updated_amenity = serializer.save()
             return Response(
-                AmenitySerializer(updated_amenity.data),
+                AmenitySerializer(updated_amenity).data,
             )
         else:
-            return Response(serializer.errors)
+            return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
 
     def delete(self, request, pk):
         amenity = self.get_object(pk)
         amenity.delete()
-        return Response(HTTP_204_NO_CONTENT)
+        return Response(status=HTTP_204_NO_CONTENT)
 
 
 class Rooms(APIView):
