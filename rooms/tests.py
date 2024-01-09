@@ -1,4 +1,6 @@
 from rest_framework.test import APITestCase
+
+from users.models import User
 from . import models
 
 
@@ -27,8 +29,10 @@ class TestAmenities(APITestCase):
         self.assertEqual(data[0]["description"], self.DESC)
 
     def test_create_amenity(self):
+        failed_name = "HEEEEEEEEEEEELLLLLLLLOOOOOOOOHEEEEEEEEEEEELLLLLLLLOOOOOOOOHEEEEEEEEEEEELLLLLLLLOOOOOOOOHEEEEEEEEEEEELLLLLLLLOOOOOOOOHEEEEEEEEEEEELLLLLLLLOOOOOOOOHEEEEEEEEEEEELLLLLLLLOOOOOOOOHEEEEEEEEEEEELLLLLLLLOOOOOOOOHEEEEEEEEEEEELLLLLLLLOOOOOOOOHEEEEEEEEEEEELLLLLLLLOOOOOOOOHEEEEEEEEEEEELLLLLLLLOOOOOOOOHEEEEEEEEEEEELLLLLLLLOOOOOOOOHEEEEEEEEEEEELLLLLLLLOOOOOOOOHEEEEEEEEEEEELLLLLLLLOOOOOOOOHEEEEEEEEEEEELLLLLLLLOOOOOOOOHEEEEEEEEEEEELLLLLLLLOOOOOOOOHEEEEEEEEEEEELLLLLLLLOOOOOOOOHEEEEEEEEEEEELLLLLLLLOOOOOOOOHEEEEEEEEEEEELLLLLLLLOOOOOOOO"
         new_amenity_name = "New Amenity"
         new_amenity_description = "New Amenity desc."
+
         response = self.client.post(
             self.URL,
             data={
@@ -45,6 +49,17 @@ class TestAmenities(APITestCase):
         self.assertEqual(data["name"], new_amenity_name)
         self.assertEqual(data["description"], new_amenity_description)
         response = self.client.post(self.URL)
+        data = response.json()
+
+        self.assertEqual(response.status_code, 400)
+        self.assertIn("name", data)
+
+        response = self.client.post(
+            self.URL,
+            data={
+                "name": failed_name,
+            },
+        )  # 최대길이 150글자만 가능한 name에 150 이상을 준 경우
         data = response.json()
 
         self.assertEqual(response.status_code, 400)
@@ -99,3 +114,21 @@ class TestAmenity(APITestCase):
         response = self.client.delete("/api/v1/rooms/amenities/1")
 
         self.assertEqual(response.status_code, 204)
+
+
+class TestRooms(APITestCase):
+    def setUp(self):
+        user = User.objects.create(
+            username="test",
+        )
+        user.set_password("123")
+        user.save()
+        self.user = user
+
+    def test_create_room(self):
+        response = self.client.post("/api/v1/rooms/")
+
+        self.assertEqual(response.status_code, 403)
+
+        self.client.force_login(self.user)
+        response = self.client.post("/api/v1/rooms/")
