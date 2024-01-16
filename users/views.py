@@ -171,7 +171,7 @@ class KakaoLogIn(APIView):
             access_token = requests.post(
                 f"https://kauth.kakao.com/oauth/token",
                 headers={
-                    "Content-type": "application/x-www-form-urlencoded;charset=utf-8",
+                    "Content-type": "application/x-www-form-urlencoded",
                 },
                 data={
                     "grant_type": "authorization_code",
@@ -181,7 +181,6 @@ class KakaoLogIn(APIView):
                 },
             )
             access_token = access_token.json().get("access_token")
-
             user_data = requests.get(
                 "https://kapi.kakao.com/v2/user/me",
                 headers={
@@ -192,11 +191,10 @@ class KakaoLogIn(APIView):
             user_data = user_data.json()
             kakao_account = user_data.get("kakao_account")
             profile = kakao_account.get("profile")
-
             try:
                 user = User.objects.get(email=kakao_account.get("email"))
                 login(request, user)
-                return response(status=status.HTTP_200_OK)
+                return Response(status=status.HTTP_200_OK)
             except User.DoesNotExist:
                 user = User.objects.create(
                     email=kakao_account.get("email"),
