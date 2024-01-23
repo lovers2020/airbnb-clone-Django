@@ -163,7 +163,7 @@ class GithubLogIn(APIView):
                 login(request, user)
                 return Response(status=status.HTTP_200_OK)
         except Exception:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+            return Response(status=status.HTTP_400_BAD_REQUEST("asdasd"))
 
 
 class KakaoLogIn(APIView):

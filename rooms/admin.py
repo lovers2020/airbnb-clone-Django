@@ -27,7 +27,7 @@ class RoomAdmin(admin.ModelAdmin):
         "city",
         "price",
         "rooms",
-        "toilet",
+        "toilets",
         "pet_friendly",
         "amenities",
         "created_at",
