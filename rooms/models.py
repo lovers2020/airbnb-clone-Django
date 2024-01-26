@@ -25,7 +25,7 @@ class Room(CommonModel):
 
     price = models.PositiveIntegerField(validators=[MinValueValidator(0)])
     rooms = models.PositiveIntegerField(validators=[MinValueValidator(0)])
-    toilet = models.PositiveIntegerField(validators=[MinValueValidator(0)])
+    toilets = models.PositiveIntegerField(validators=[MinValueValidator(0)])
     description = models.TextField()
     address = models.CharField(max_length=250)
     pet_friendly = models.BooleanField(default=True)
