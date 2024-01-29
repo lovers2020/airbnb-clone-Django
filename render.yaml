@@ -11,7 +11,7 @@ services:
       runtime: python
       region: singapore
       buildCommand: "./build.sh"
-      startCommand: "gunicorn mysite.wsgi:application"
+      startCommand: "gunicorn config.wsgi:application"
       plan: starter
       envVars:
           - key: DATABASE_URL
