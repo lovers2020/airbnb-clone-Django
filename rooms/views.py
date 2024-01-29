@@ -183,7 +183,7 @@ class RoomDetail(APIView):
             except Exception:
                 raise ParseError("Amenity not found")
         else:
-            return Response(serializer.errors)
+            return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
 
     def delete(self, request, pk):
         room = self.get_object(pk)
@@ -287,12 +287,11 @@ class RoomsBookings(APIView):
     def get(self, request, pk):
         room = self.get_object(pk)
         now = timezone.localtime(timezone.now()).date()
-        print(now)
 
         bookings = Booking.objects.filter(
             room=room,
             kind=Booking.BookingKindChoices.ROOM,
-            check_in__gt=now,
+            check_in__gte=now,
         )
         serializer = PublicBookingSerializer(bookings, many=True)
         return Response(serializer.data)
