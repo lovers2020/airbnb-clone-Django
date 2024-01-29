@@ -14,6 +14,7 @@ from pathlib import Path
 import os
 import environ
 import dj_database_url
+import sentry_sdk
 
 env = environ.Env()
 
@@ -190,8 +191,6 @@ GH_SECRET = env("GH_SECRET")
 CF_ID = env("CF_ID")
 CF_TOKEN = env("CF_TOKEN")
 
-
-import sentry_sdk
 
 if not DEBUG:
     sentry_sdk.init(
