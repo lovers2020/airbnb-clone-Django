@@ -194,7 +194,7 @@ CF_TOKEN = env("CF_TOKEN")
 
 if not DEBUG:
     sentry_sdk.init(
-        dsn="https://a618a2bca2e2589a8050408b29ad8e10@o4506655114199040.ingest.sentry.io/4506655115968512",
+        dsn="https://c6a06e53e988d4419884f526293973c9@o4506655263686656.ingest.sentry.io/4506655265456128",
         traces_sample_rate=1.0,
         profiles_sample_rate=1.0,
     )
