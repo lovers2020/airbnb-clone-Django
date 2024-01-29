@@ -189,3 +189,13 @@ CSRF_TRUSTED_ORIGINS = ["http://127.0.0.1:3000"]
 GH_SECRET = env("GH_SECRET")
 CF_ID = env("CF_ID")
 CF_TOKEN = env("CF_TOKEN")
+
+
+import sentry_sdk
+
+if not DEBUG:
+    sentry_sdk.init(
+        dsn="https://a618a2bca2e2589a8050408b29ad8e10@o4506655114199040.ingest.sentry.io/4506655115968512",
+        traces_sample_rate=1.0,
+        profiles_sample_rate=1.0,
+    )
