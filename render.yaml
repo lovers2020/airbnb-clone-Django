@@ -12,7 +12,7 @@ services:
       region: singapore
       buildCommand: "./build.sh"
       startCommand: "gunicorn config.wsgi:application"
-      plan: starter
+      plan: free
       envVars:
           - key: DATABASE_URL
             fromDatabase:
